@@ -1,29 +1,24 @@
 package com.example.mapapp;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+import android.widget.Toast;
 
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.SettingsClient;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+
+import com.example.mapapp.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.mapapp.databinding.ActivityMapsBinding;
 
 import java.util.List;
 
@@ -41,74 +36,90 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        if(isLocationPermissionGranted()){
 
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
-        getLocation();
-
-
-            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.map);
-            mapFragment.getMapAsync(this);
+            // Set Marker in map...................................
+//            LatLng sydney = new LatLng(-34, 151);
+//            mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+//            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
             try{
                 listGeoCoder=new Geocoder(this).getFromLocationName("BAPS Swaminarayan Chhatralay (APC), Anand - Vidyanagar Road, Ketivadi, Vallabh Vidyanagar, Anand, Gujarat",1);
             }
             catch(Exception e)
             {
-                System.out.println(e);
+                e.printStackTrace();
             }
             double longitude=listGeoCoder.get(0).getLongitude();
             double latitude=listGeoCoder.get(0).getLatitude();
             //Print in Log COnsole
-            Log.i("GOOGLE_MAP_TAG","Address h" + "as Longitude ::: "+String.valueOf(longitude)+" And Latitude ::: "+String.valueOf(latitude));
+//            Log.i("GOOGLE_MAP_TAG","Address h" + "as Longitude ::: "+String.valueOf(longitude)+" And Latitude ::: "+String.valueOf(latitude));
+
+            //Toast String...................................
+
+//            String s = "Address h" + "as Longitude ::: " + String.valueOf(longitude) + " And Latitude ::: " + String.valueOf(latitude);
+//            Toast toast=Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT);
+//            toast.setMargin(50,50);
+//            toast.show();
+
+            LatLng latlagofAPC=new LatLng(latitude,longitude);
+            mMap.addMarker(new MarkerOptions().position(latlagofAPC).title("APC"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latlagofAPC));
+
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(@NonNull LatLng latLng) {
+                    mMap.addMarker(new MarkerOptions().position(latLng).title("Click Here"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+                    String s = "Address h" + "as Longitude ::: " + String.valueOf(latLng.longitude) + " And Latitude ::: " + String.valueOf(latLng.latitude);
+                    Toast toast=Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT);
+                    toast.setMargin(50,50);
+                    toast.show();
+                }
+            });
 
 
 
-    }
-
-//    private boolean isLocationPermissionGranted(){
-//        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)==
-//        PackageManager.PERMISSION_GRANTED){
-//            return true;
-//        }
-//        else{
-//            return false;
-//        }
-//    }
-
-    public void getLocation() {
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
         }
+        else{
+            requestLocationPermissions();
+        }
+//
+//        Geocoder geocoder=new Geocoder(this);
+//        geocoder.getFromLocation()
+
 
 
     }
+
+
+
+    private boolean isLocationPermissionGranted(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)==
+        PackageManager.PERMISSION_GRANTED){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    private void requestLocationPermissions(){
+        ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_PERMISSION_CODE);
+    }
+
 }
