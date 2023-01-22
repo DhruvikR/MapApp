@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.mapapp">
 
-
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-    <!-- Include only if your app benefits from precise location access. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Include only if your app benefits from precise location access. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -23,7 +17,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MapApp"
         tools:targetApi="31">
-
+        <activity
+            android:name=".setNotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".setAlarmActivity"
+            android:exported="false" />
+        <activity
+            android:name=".markerClickActivity"
+            android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
