@@ -93,6 +93,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             });
 
 
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)==
+                    PackageManager.PERMISSION_GRANTED){
+                mMap.setMyLocationEnabled(true);
+            }
+
+
 
         }
         else{
