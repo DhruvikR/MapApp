@@ -9,11 +9,11 @@
     <TextView
         android:id="@+id/textView2"
         android:layout_width="349dp"
-        android:layout_height="60dp"
+        android:layout_height="59dp"
         android:layout_marginStart="31dp"
         android:layout_marginTop="177dp"
         android:layout_marginEnd="31dp"
-        android:layout_marginBottom="494dp"
+        android:layout_marginBottom="495dp"
         android:text="Set Alarm/Notification"
         android:textAlignment="center"
         android:textSize="34sp"
@@ -22,49 +22,94 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/btnForAlarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="146dp"
+        android:layout_marginTop="389dp"
+        android:layout_marginEnd="145dp"
+        android:layout_marginBottom="294dp"
+        android:onClick="addAlarm"
+        android:text="Set Alarm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnForNotification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="118dp"
+        android:layout_marginTop="466dp"
+        android:layout_marginEnd="119dp"
+        android:layout_marginBottom="217dp"
+        android:onClick="addNotification"
+        android:text="Set Notification"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
-        android:id="@+id/textOfAdd"
-        android:layout_width="349dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="276dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="395dp"
-        android:textAlignment="center"
+        android:id="@+id/textViewForAddress"
+        android:layout_width="339dp"
+        android:layout_height="126dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="236dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="369dp"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="226dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="93dp"
+        android:layout_marginTop="587dp"
+        android:layout_marginEnd="92dp"
+        android:layout_marginBottom="85dp"
+        android:indeterminate="false"
+        android:max="3000"
+        android:min="20"
+        android:progressTint="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewSeekBar"
+        android:layout_width="179dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="632dp"
+        android:layout_marginEnd="116dp"
+        android:layout_marginBottom="71dp"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <Button-->
-<!--        android:id="@+id/btnForAlarm"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="145dp"-->
-<!--        android:layout_marginTop="388dp"-->
-<!--        android:layout_marginEnd="146dp"-->
-<!--        android:layout_marginBottom="295dp"-->
-<!--        android:onClick="addAlarm"-->
-<!--        android:text="Set Alarm"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/btnForNotification"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="118dp"-->
-<!--        android:layout_marginTop="465dp"-->
-<!--        android:layout_marginEnd="119dp"-->
-<!--        android:layout_marginBottom="218dp"-->
-<!--        android:onClick="addNotification"-->
-<!--        android:text="Set Notification"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <TextView
+        android:id="@+id/textViewSeekBar2"
+        android:layout_width="178dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="93dp"
+        android:layout_marginTop="553dp"
+        android:layout_marginEnd="140dp"
+        android:layout_marginBottom="119dp"
+        android:text="Set Range in meter :"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

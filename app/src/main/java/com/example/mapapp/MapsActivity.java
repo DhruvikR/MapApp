@@ -94,7 +94,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Address obj = addresses.get(0);
                         address = obj.getAddressLine(0);
                         String textforToast=address+"\nPlease Click on Marker for Set Notification or Alarm";
-                        Toast toast=Toast.makeText(getApplicationContext(),textforToast,Toast.LENGTH_SHORT);
+                        Toast toast=Toast.makeText(getApplicationContext(),textforToast,Toast.LENGTH_LONG);
                         toast.setMargin(50,50);
                         toast.show();
                         mMap.addMarker(new MarkerOptions().position(latLng).title(address));
