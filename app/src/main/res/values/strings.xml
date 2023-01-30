@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Travel Alarm</string>
     <string name="title_activity_maps">Travel Alarm</string>
+    <string name="title_activity_set_alarm_map">SetAlarmActivityMap</string>
 </resources>

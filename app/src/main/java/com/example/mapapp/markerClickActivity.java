@@ -13,13 +13,14 @@ public class markerClickActivity extends AppCompatActivity {
     TextView editText,textOfSeekBar;
     String textForAddress;
     SeekBar seekBar;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_marker_click);
 
-        Intent intent=getIntent();
+        intent=getIntent();
 
         textForAddress = "Address : "+intent.getStringExtra("Address_massage");
 
@@ -58,7 +59,8 @@ public class markerClickActivity extends AppCompatActivity {
     }
 
     public void addAlarm(View view) {
-        Intent intentOfSetAlarm=new Intent(markerClickActivity.this,setAlarmActivity.class);
+        Intent intentOfSetAlarm=new Intent(markerClickActivity.this,SetAlarmActivityMap.class);
+        intentOfSetAlarm.putExtra("LatLag", intent.getStringExtra("Address_massage"));
         startActivity(intentOfSetAlarm);
     }
 

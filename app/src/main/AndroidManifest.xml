@@ -17,15 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MapApp"
         tools:targetApi="31">
-        <activity
-            android:name=".setNotificationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".setAlarmActivity"
-            android:exported="false" />
-        <activity
-            android:name=".markerClickActivity"
-            android:exported="false" />
+
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -39,8 +31,21 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD_R5lSLnswFkoCIPx0Is9FdGYq0jObJMU" />
+            android:value="YOUR_API_KEY" />
 
+        <activity
+            android:name=".SetAlarmActivityMap"
+            android:exported="false"
+            android:label="@string/title_activity_set_alarm_map" />
+        <activity
+            android:name=".setNotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".setAlarmActivity"
+            android:exported="false" />
+        <activity
+            android:name=".markerClickActivity"
+            android:exported="false" />
         <activity
             android:name=".MapsActivity"
             android:exported="true"
