@@ -1,10 +1,14 @@
 package com.example.mapapp;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -26,13 +30,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,LocationListener {
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
     List<Address> listGeoCoder;
     private static final int LOCATION_PERMISSION_CODE=101;
     private String address;
+    LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +56,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        if(isLocationPermissionGranted()){
+        if(isLocationPermissionGranted())
+        {
 
 
             // Set Marker in map...................................
@@ -59,16 +65,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //            mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 //            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-            try{
-                listGeoCoder=new Geocoder(this).getFromLocationName("BAPS Swaminarayan Chhatralay (APC), " +
-                        "Anand - Vidyanagar Road, Ketivadi, Vallabh Vidyanagar, Anand, Gujarat",1);
-            }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            }
-            double longitude=listGeoCoder.get(0).getLongitude();
-            double latitude=listGeoCoder.get(0).getLatitude();
+//            try{
+//                listGeoCoder=new Geocoder(this).getFromLocationName("BAPS Swaminarayan Chhatralay (APC), " +
+//                        "Anand - Vidyanagar Road, Ketivadi, Vallabh Vidyanagar, Anand, Gujarat",1);
+//            }
+//            catch(Exception e)
+//            {
+//                e.printStackTrace();
+//            }
+//            double longitude=listGeoCoder.get(0).getLongitude();
+//            double latitude=listGeoCoder.get(0).getLatitude();
             //Print in Log COnsole
 //            Log.i("GOOGLE_MAP_TAG","Address h" + "as Longitude ::: "+String.valueOf(longitude)+" And Latitude ::: "+String.valueOf(latitude));
 
@@ -83,9 +89,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 //            mMap.addMarker(new MarkerOptions().position(latlagofAPC).title("APC"));
 //            mMap.moveCamera(CameraUpdateFactory.newLatLng(latlagofAPC));
             Geocoder geocoder = new Geocoder(MapsActivity.this, Locale.getDefault());
-            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener()
+            {
                 @Override
-                public void onMapClick(@NonNull LatLng latLng) {
+                public void onMapClick(@NonNull LatLng latLng)
+                {
                     mMap.clear();
                     try{
                         List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
@@ -105,7 +113,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             });
 
-            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
+            {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
                     // on marker click we are getting the title of our marker
@@ -130,17 +139,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         else{
             requestLocationPermissions();
         }
-//
-//        Geocoder geocoder=new Geocoder(this);
-//        geocoder.getFromLocation()
 
 
+        getLocation();
+    }
 
+    @SuppressLint("MissingPermission")
+    private void getLocation()
+    {
+        try{
+            locationManager=(LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,5, (LocationListener) MapsActivity.this);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
 
-    private boolean isLocationPermissionGranted(){
+    private boolean isLocationPermissionGranted()
+    {
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)==
         PackageManager.PERMISSION_GRANTED){
             return true;
@@ -150,9 +168,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private void requestLocationPermissions(){
+
+    private void requestLocationPermissions()
+    {
         ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},
                 LOCATION_PERMISSION_CODE);
     }
 
+
+
+    @Override
+    public void onLocationChanged(@NonNull Location location)
+    {
+        Toast.makeText(this,""+location.getLatitude()+" "+location.getLongitude(),Toast.LENGTH_LONG);
+    }
 }
