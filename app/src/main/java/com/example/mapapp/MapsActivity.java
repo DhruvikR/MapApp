@@ -10,11 +10,19 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.SearchView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.mapapp.databinding.ActivityMapsBinding;
@@ -25,6 +33,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.io.IOException;
 import java.util.List;
@@ -38,6 +47,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final int LOCATION_PERMISSION_CODE=101;
     private String address;
     LocationManager locationManager;
+    private Toolbar category;
+    SupportMapFragment mapFragment;
+    SearchView searchView;
+    ActionBarDrawerToggle actionBarDrawerToggle;
+    DrawerLayout drawerLayout;
+    MaterialToolbar materialToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +65,73 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        searchView=findViewById(R.id.sv_location);
+        mapFragment=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String location=searchView.getQuery().toString();
+                List<Address> addressList=null;
+                if(location !=null || !location.equals("")){
+
+                    Geocoder geocoder=new Geocoder(MapsActivity.this);
+                    try{
+                        addressList = geocoder.getFromLocationName(location,1);
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    Address obj = addressList.get(0);
+                    LatLng latlng1 = new LatLng(obj.getLatitude(), obj.getLongitude());
+                    mMap.addMarker(new MarkerOptions().position(latlng1).title(address));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng1));
+
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        SupportMapFragment mapFragment1=(SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment1.getMapAsync(this);
+
+        setUpViews();
+
+
+    }
+
+    private void setUpViews(){
+        setUpDrawerLayout();
+    }
+
+    private void setUpDrawerLayout(){
+        materialToolbar=findViewById(R.id.appBar);
+        ((AppCompatActivity) mapFragment.getActivity()).setSupportActionBar(materialToolbar);
+        drawerLayout=findViewById(R.id.mainDrawer);
+        actionBarDrawerToggle=new ActionBarDrawerToggle(MapsActivity.this,drawerLayout,R.string.app_name,R.string.app_name);
+        actionBarDrawerToggle.syncState();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(actionBarDrawerToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.navigation_menu, menu);
+
+        // Calling super after populating the menu is necessary here to ensure that the
+        // action bar helpers have a chance to handle this event.
+        return true;
     }
 
     @Override
